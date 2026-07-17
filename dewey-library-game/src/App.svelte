@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import { bookQuests, obstacles, sections, type BookQuest, type DeweySection } from './lib/gameData'
 
   type GameState = 'needQuest' | 'searching' | 'carrying' | 'correct' | 'incorrect'
@@ -13,6 +14,8 @@
 
   const playerSize = { width: 3, height: 5 }
   const librarian = { x: 50, y: 39 }
+  const pressedArrowKeys = new Set<string>()
+  const movementSpeed = 24
 
   const nearLibrarian = $derived(
     Math.hypot(player.x + 1.5 - librarian.x, player.y + 2.5 - librarian.y) < 10,
@@ -36,28 +39,52 @@
     )
   }
 
-  function move(dx: number, dy: number) {
-    const step = 1.35
-    const nextX = player.x + dx * step
-    const nextY = player.y + dy * step
+  function move(dx: number, dy: number, distance = 1.35) {
+    const nextX = player.x + dx * distance
+    const nextY = player.y + dy * distance
     if (!collides(nextX, player.y)) player.x = nextX
     if (!collides(player.x, nextY)) player.y = nextY
   }
 
   function handleKeydown(event: KeyboardEvent) {
-    const directions: Record<string, [number, number]> = {
-      ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0],
-    }
-    const direction = directions[event.key]
-    if (direction) {
+    if (event.key.startsWith('Arrow')) {
       event.preventDefault()
-      move(...direction)
+      pressedArrowKeys.add(event.key)
     }
     if ((event.key === ' ' || event.key === 'Enter') && (nearLibrarian || nearbySection)) {
       event.preventDefault()
       doAction()
     }
   }
+
+  function handleKeyup(event: KeyboardEvent) {
+    if (event.key.startsWith('Arrow')) {
+      event.preventDefault()
+      pressedArrowKeys.delete(event.key)
+    }
+  }
+
+  onMount(() => {
+    let animationFrame: number
+    let previousTime = performance.now()
+
+    function updateMovement(time: number) {
+      const elapsedSeconds = Math.min((time - previousTime) / 1000, 0.05)
+      previousTime = time
+
+      const dx = Number(pressedArrowKeys.has('ArrowRight')) - Number(pressedArrowKeys.has('ArrowLeft'))
+      const dy = Number(pressedArrowKeys.has('ArrowDown')) - Number(pressedArrowKeys.has('ArrowUp'))
+      if (dx || dy) {
+        const length = Math.hypot(dx, dy)
+        move(dx / length, dy / length, movementSpeed * elapsedSeconds)
+      }
+
+      animationFrame = requestAnimationFrame(updateMovement)
+    }
+
+    animationFrame = requestAnimationFrame(updateMovement)
+    return () => cancelAnimationFrame(animationFrame)
+  })
 
   function startQuest() {
     let next = bookQuests[Math.floor(Math.random() * bookQuests.length)]
@@ -124,7 +151,11 @@
   }
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
+<svelte:window
+  onkeydown={handleKeydown}
+  onkeyup={handleKeyup}
+  onblur={() => pressedArrowKeys.clear()}
+/>
 
 <main>
   <header class="titlebar">
