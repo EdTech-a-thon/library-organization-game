@@ -34,7 +34,20 @@ export const obstacles: Rectangle[] = [
   { x: 45, y: 43, width: 10, height: 12 }, { x: 46, y: 68, width: 8, height: 7 },
 ]
 
-export const questNumbers = [
-  24, 58, 86, 112, 147, 185, 214, 255, 292, 315, 347, 383, 412, 456, 491,
-  507, 548, 582, 613, 657, 694, 718, 756, 793, 814, 852, 887, 906, 947, 985,
+export type BookQuest = {
+  title: string
+  sectionId: number
+}
+
+export const bookQuests: BookQuest[] = [
+  { title: 'How Computers Work', sectionId: 0 },
+  { title: 'Big Questions for Curious Minds', sectionId: 1 },
+  { title: 'World Religions and Traditions', sectionId: 2 },
+  { title: 'How Communities Work', sectionId: 3 },
+  { title: 'Words Around the World', sectionId: 4 },
+  { title: 'The Amazing World of Insects', sectionId: 5 },
+  { title: 'Building a Healthy Body', sectionId: 6 },
+  { title: 'A Young Artist’s Handbook', sectionId: 7 },
+  { title: 'Poems for Every Season', sectionId: 8 },
+  { title: 'Explorers of Ancient Egypt', sectionId: 9 },
 ]

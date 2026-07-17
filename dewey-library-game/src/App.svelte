@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { obstacles, questNumbers, sections, type DeweySection } from './lib/gameData'
+  import { bookQuests, obstacles, sections, type BookQuest, type DeweySection } from './lib/gameData'
 
   type GameState = 'needQuest' | 'searching' | 'carrying' | 'correct' | 'incorrect'
 
   let player = $state({ x: 48.5, y: 88 })
   let gameState = $state<GameState>('needQuest')
-  let questNumber = $state<number | null>(null)
+  let quest = $state<BookQuest | null>(null)
   let carriedSection = $state<DeweySection | null>(null)
   let score = $state(0)
   let message = $state('Walk to Ms. Maple at the desk to get your first mission!')
@@ -60,32 +60,31 @@
   }
 
   function startQuest() {
-    let next = questNumbers[Math.floor(Math.random() * questNumbers.length)]
-    while (next === questNumber) next = questNumbers[Math.floor(Math.random() * questNumbers.length)]
-    questNumber = next
+    let next = bookQuests[Math.floor(Math.random() * bookQuests.length)]
+    while (next === quest) next = bookQuests[Math.floor(Math.random() * bookQuests.length)]
+    quest = next
     carriedSection = null
     gameState = 'searching'
-    message = `Please find the book with call number ${String(next).padStart(3, '0')}. Use the guide, then visit that shelf!`
+    message = `Please find “${next.title}.” It belongs in ${sections[next.sectionId].shortName}. Use the quick guide to choose the right stack!`
   }
 
   function pickUpBook() {
     if (!nearbySection || gameState !== 'searching') return
     carriedSection = nearbySection
     gameState = 'carrying'
-    message = `You picked a book from the ${nearbySection.range} shelves. Bring it back to Ms. Maple!`
+    message = `You picked up “${quest?.title}” from the ${nearbySection.range} stack. Bring it back to Ms. Maple!`
   }
 
   function checkBook() {
-    if (!carriedSection || questNumber === null) return
-    const correctSection = Math.floor(questNumber / 100)
-    if (carriedSection.id === correctSection) {
+    if (!carriedSection || !quest) return
+    if (carriedSection.id === quest.sectionId) {
       score += 1
       gameState = 'correct'
-      message = `Yes! ${String(questNumber).padStart(3, '0')} belongs in ${carriedSection.range}. Wonderful work!`
+      message = `Yes! “${quest.title}” belongs in ${sections[quest.sectionId].shortName}, the ${carriedSection.range} stack. Wonderful work!`
     } else {
-      const answer = sections[correctSection]
+      const answer = sections[quest.sectionId]
       gameState = 'incorrect'
-      message = `Not quite. ${String(questNumber).padStart(3, '0')} belongs in ${answer.range}, ${answer.name}. Let's try again!`
+      message = `Not quite. “${quest.title}” belongs in ${answer.shortName}. Check the quick guide and try again!`
       carriedSection = null
     }
   }
@@ -96,9 +95,9 @@
       else if (gameState === 'carrying') checkBook()
       else if (gameState === 'incorrect') {
         gameState = 'searching'
-        message = `Try again: find call number ${String(questNumber).padStart(3, '0')}. Look at its first digit!`
+        message = `Try again: “${quest?.title}” belongs in ${quest ? sections[quest.sectionId].shortName : ''}. Match that topic to a range in the quick guide!`
       } else {
-        message = `Your mission is call number ${String(questNumber).padStart(3, '0')}. Find its section using the guide!`
+        message = `Your mission is “${quest?.title}.” It belongs in ${quest ? sections[quest.sectionId].shortName : ''}. Use the quick guide to find its stack!`
       }
     } else if (nearbySection) pickUpBook()
   }
@@ -111,14 +110,14 @@
       if (gameState === 'incorrect') return 'Try Again'
       return 'Hear Mission Again'
     }
-    if (nearbySection && gameState === 'searching') return `Pick Up ${nearbySection.range} Book`
+    if (nearbySection && gameState === 'searching') return `Check ${nearbySection.range} Stack`
     return null
   }
 
   function resetGame() {
     player = { x: 48.5, y: 88 }
     gameState = 'needQuest'
-    questNumber = null
+    quest = null
     carriedSection = null
     score = 0
     message = 'Walk to Ms. Maple at the desk to get your first mission!'
@@ -141,12 +140,12 @@
   </header>
 
   <section class="guide" aria-label="Dewey Decimal guide">
-    <div class="guide-title"><span>QUICK<br />GUIDE</span><b>First digit<br />shows the section!</b></div>
+    <div class="guide-title"><span>QUICK<br />GUIDE</span><b>Match each topic<br />to its number range!</b></div>
     <div class="guide-scroll">
       {#each sections as section}
         <div class="guide-item" style:--section-color={section.color}>
           <span class="guide-icon" aria-hidden="true">{section.icon}</span>
-          <span><strong>{section.id}00s</strong><small>{section.shortName}</small></span>
+          <span><strong>{section.range}</strong><small>{section.shortName}</small></span>
         </div>
       {/each}
     </div>
@@ -155,8 +154,8 @@
   <section class="mission-bar" aria-live="polite">
     <div class="portrait" aria-hidden="true">👩🏾‍🦱</div>
     <div class="mission-copy"><strong>Ms. Maple says:</strong><span>{message}</span></div>
-    {#if questNumber !== null && gameState !== 'correct'}
-      <div class="call-number"><small>FIND</small><strong>{String(questNumber).padStart(3, '0')}</strong></div>
+    {#if quest && gameState !== 'correct'}
+      <div class="book-mission"><small>FIND THIS BOOK</small><strong>{quest.title}</strong><span>{sections[quest.sectionId].shortName}</span></div>
     {/if}
     {#if carriedSection}
       <div class="inventory"><span aria-hidden="true">📕</span><small>CARRYING</small><b>{carriedSection.range}</b></div>
@@ -170,7 +169,7 @@
 
       {#each sections as section}
         <div class="bookshelf" class:nearby={nearbySection?.id === section.id} style:left={`${section.x}%`} style:top={`${section.y}%`} style:width={`${section.width}%`} style:height={`${section.height}%`} style:--section-color={section.color}>
-          <div class="shelf-sign"><strong>{section.range}</strong><span>{section.name}</span></div>
+          <div class="shelf-sign"><strong>{section.range}</strong></div>
           <div class="book-spines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
       {/each}
@@ -220,9 +219,9 @@
       <p class="eyebrow">YOUR LIBRARY MISSION</p>
       <h2 id="help-title">How to Play Dewey Dash</h2>
       <ol>
-        <li><span>1</span><div><b>Visit Ms. Maple</b><small>Walk to the librarian in the middle to get a call number.</small></div></li>
-        <li><span>2</span><div><b>Check the first digit</b><small>Use the guide above. A number like 537 belongs in the 500s.</small></div></li>
-        <li><span>3</span><div><b>Find and return the book</b><small>Pick it up at the shelf, then bring it back to Ms. Maple.</small></div></li>
+        <li><span>1</span><div><b>Visit Ms. Maple</b><small>She will give you a book title and tell you its topic.</small></div></li>
+        <li><span>2</span><div><b>Use the quick guide</b><small>Match the book’s topic to its Dewey Decimal number range.</small></div></li>
+        <li><span>3</span><div><b>Find and return the book</b><small>Choose the stack with that number range, then bring the book back to Ms. Maple.</small></div></li>
       </ol>
       <button class="primary-button" onclick={() => (showHelp = false)}>Let's find some books!</button>
     </dialog>

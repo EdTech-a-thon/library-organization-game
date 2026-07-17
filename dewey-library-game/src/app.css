@@ -18,14 +18,14 @@ h1 { font-family: 'Baloo 2', sans-serif; font-size: 32px; line-height: .9; margi
 .round-button { border-radius: 50%; width: 38px; height: 38px; font-size: 20px; }
 .reset-button { border-radius: 10px; padding: 8px 13px; }
 .guide { display: flex; background: #fff; border-bottom: 1px solid #cfbfa6; min-height: 68px; }
-.guide-title { flex: 0 0 155px; display: flex; align-items: center; gap: 10px; padding: 9px 14px; color: #fff; background: #d1614b; clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%); }
+.guide-title { flex: 0 0 175px; display: flex; align-items: center; gap: 10px; padding: 9px 14px; color: #fff; background: #d1614b; clip-path: polygon(0 0, 90% 0, 100% 50%, 90% 100%, 0 100%); }
 .guide-title span { font-family: 'Baloo 2'; font-size: 13px; line-height: .95; }
 .guide-title b { font-size: 10px; line-height: 1.2; }
 .guide-scroll { display: flex; flex: 1; overflow-x: auto; scrollbar-width: thin; align-items: stretch; }
-.guide-item { min-width: 112px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 5px; border-right: 1px dashed #c9c0b0; border-top: 5px solid var(--section-color); }
+.guide-item { min-width: 125px; flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 7px 5px; border-right: 1px dashed #c9c0b0; border-top: 5px solid var(--section-color); }
 .guide-icon { font-size: 20px; }
 .guide-item strong, .guide-item small { display: block; }
-.guide-item strong { font-family: 'Baloo 2'; font-size: 17px; line-height: 1; color: var(--section-color); }
+.guide-item strong { font-family: 'Baloo 2'; font-size: 15px; line-height: 1; color: var(--section-color); }
 .guide-item small { max-width: 76px; font-size: 9px; font-weight: 900; line-height: 1.05; color: #4c5a62; }
 .mission-bar { min-height: 62px; padding: 8px 22px; display: flex; align-items: center; gap: 12px; background: #fff8e9; border-bottom: 3px solid #c6a16a; }
 .portrait { display: grid; place-items: center; width: 46px; height: 46px; font-size: 30px; background: #acd7cc; border: 3px solid #31566c; border-radius: 50%; }
@@ -33,9 +33,11 @@ h1 { font-family: 'Baloo 2', sans-serif; font-size: 32px; line-height: .9; margi
 .mission-copy strong, .mission-copy span { display: block; }
 .mission-copy strong { color: #b94c3e; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
 .mission-copy span { font-size: 14px; font-weight: 800; }
-.call-number, .inventory { display: grid; grid-template-columns: auto auto; align-items: center; gap: 0 7px; padding: 4px 13px; border-radius: 10px; background: #fff; border: 2px solid #d8bd8d; box-shadow: 0 3px 0 #d1b47f; }
-.call-number small, .inventory small { font-size: 9px; font-weight: 900; letter-spacing: 1px; color: #a55242; }
-.call-number strong { grid-row: span 2; font-family: 'Baloo 2'; font-size: 28px; color: #31566c; }
+.book-mission, .inventory { display: grid; grid-template-columns: auto auto; align-items: center; gap: 0 7px; padding: 4px 13px; border-radius: 10px; background: #fff; border: 2px solid #d8bd8d; box-shadow: 0 3px 0 #d1b47f; }
+.book-mission { display: flex; max-width: 280px; flex-direction: column; align-items: flex-start; line-height: 1.05; }
+.book-mission small, .inventory small { font-size: 9px; font-weight: 900; letter-spacing: 1px; color: #a55242; }
+.book-mission strong { color: #31566c; font-size: 13px; }
+.book-mission span { color: #61727b; font-size: 10px; font-weight: 900; }
 .inventory span { grid-row: span 2; font-size: 25px; }
 .inventory b { font-size: 12px; }
 .game-shell { background: #947253; padding: 10px 18px 12px; }
@@ -47,7 +49,6 @@ h1 { font-family: 'Baloo 2', sans-serif; font-size: 32px; line-height: .9; margi
 .bookshelf.nearby { filter: drop-shadow(0 0 8px #ffe13c); transform: scale(1.025); }
 .shelf-sign { position: absolute; z-index: 2; left: 6%; right: 6%; top: -9%; min-height: 52%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px; color: white; text-align: center; background: var(--section-color); border: 2px solid #fff9e8; border-radius: 4px; box-shadow: 0 2px 0 #3e301f88; }
 .shelf-sign strong { font-family: 'Baloo 2'; font-size: clamp(10px, 1.3vw, 17px); line-height: .9; }
-.shelf-sign span { max-width: 95%; font-size: clamp(5px, .7vw, 9px); font-weight: 900; line-height: 1; }
 .book-spines { position: absolute; bottom: 5%; left: 7%; right: 7%; height: 46%; display: flex; align-items: end; gap: 3%; padding: 2px 5px 0; background: #3f2b20; border-bottom: 3px solid #b08048; overflow: hidden; }
 .book-spines i { flex: 1; height: 75%; background: #d66b52; border-radius: 1px 1px 0 0; }
 .book-spines i:nth-child(2n) { height: 92%; background: #e6bd56; } .book-spines i:nth-child(3n) { height: 66%; background: #6db5a6; } .book-spines i:nth-child(4n) { background: #7893c5; }
