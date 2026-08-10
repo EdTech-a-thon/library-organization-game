@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { bookQuests, obstacles, sections, shelfRange, shelfRanges, shelfTopic, type BookQuest, type DeweySection } from './lib/gameData'
+  import Footer from './components/Footer.svelte'
 
   type GameState = 'needQuest' | 'classifying' | 'searching' | 'shelving' | 'carrying' | 'correct' | 'incorrect'
 
@@ -672,7 +673,7 @@
 <main>
   <header class="titlebar">
     <div class="brand">
-      <span class="brand-book" aria-hidden="true">📚</span>
+      <img class="brand-logo" src="/favicon.svg" alt="" width="46" height="46" />
       <div><span>Maple Street Library</span><h1>Dewey Dash</h1></div>
     </div>
       <div class="header-actions">
@@ -820,6 +821,8 @@
       {/if}
     </div>
   </div>
+
+  <Footer />
 </main>
 
 {#if showAccessibility}
@@ -841,7 +844,7 @@
 {#if showHelp && onboardingStep === 'start'}
   <div class="modal-backdrop start-backdrop" role="presentation">
     <dialog class="start-card" open aria-labelledby="start-title">
-      <span class="start-books" aria-hidden="true">📚</span>
+      <img class="start-logo" src="/favicon.svg" alt="" width="78" height="78" />
       <p class="eyebrow">MR. MASON AND EDTECH-A-THON PRESENTS</p>
       <h2 id="start-title">Dewey Dash</h2>
       <p>Ready to become a library book detective?</p>
