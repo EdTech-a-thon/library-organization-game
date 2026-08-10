@@ -4,7 +4,7 @@
 
 <header class="titlebar">
   <a class="brand brand-link" href="/" onclick={(event) => handleLinkClick(event, '/')}>
-    <span class="brand-book" aria-hidden="true">📚</span>
+    <img class="brand-logo" src="/favicon.svg" alt="" width="46" height="46" />
     <div><span>Maple Street Library</span><h1>Dewey Dash</h1></div>
   </a>
   <div class="header-actions">
