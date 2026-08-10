@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { bookQuests, obstacles, sections, shelfRange, shelfRanges, shelfTopic, type BookQuest, type DeweySection } from './lib/gameData'
+  import Footer from './components/Footer.svelte'
 
   type GameState = 'needQuest' | 'classifying' | 'searching' | 'shelving' | 'carrying' | 'correct' | 'incorrect'
 
@@ -820,6 +821,8 @@
       {/if}
     </div>
   </div>
+
+  <Footer />
 </main>
 
 {#if showAccessibility}

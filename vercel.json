@@ -4,6 +4,7 @@
   "buildCommand": "vite build",
   "outputDirectory": "dist",
   "cleanUrls": true,
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "headers": [
     {
       "source": "/assets/(.*)",
