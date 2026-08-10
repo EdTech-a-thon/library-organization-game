@@ -48,8 +48,8 @@
         We'd love to hear from you. Tell us what's working, what's not, or pitch us an idea for a
         tool you wish existed. We're here to help.
       </p>
-      <a class="email-button" href="mailto:directors@edtechathon.com?subject=dewey%20dash%20feedback">
-        Email directors@edtechathon.com
+      <a class="email-button" href="mailto:support@deweydash.net?subject=dewey%20dash%20feedback">
+        Email support@deweydash.net
       </a>
     </section>
 

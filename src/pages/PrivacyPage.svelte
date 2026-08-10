@@ -30,8 +30,8 @@
       </p>
       <p>
         Questions or concerns? Email
-        <a href="mailto:directors@edtechathon.com?subject=dewey%20dash%20privacy">
-          directors@edtechathon.com
+        <a href="mailto:support@deweydash.net?subject=dewey%20dash%20privacy">
+          support@deweydash.net
         </a>.
       </p>
     </section>
