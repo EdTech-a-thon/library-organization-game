@@ -17,10 +17,10 @@
     <section class="card">
       <div class="card-heading">
         <img class="card-logo" src={edtechathonLogo} alt="" />
-        <h3>From the EdTech-a-thon</h3>
+        <h3>Created by Mason Van Horn</h3>
       </div>
       <p>
-        Dewey Dash is a project from the
+        Dewey Dash is a project hosted by the
         <a href="https://edtechathon.com" target="_blank" rel="noopener noreferrer">EdTech-a-thon</a>,
         a community of builders making free tools for classrooms. Learn more about who we are and
         what else we're building at
@@ -55,7 +55,7 @@
 
     <section class="card">
       <h3>Who built this</h3>
-      <p>Programmers: Duncan Johnson and Mason Van Horn.</p>
+      <p>Programmers: Mason Van Horn and Duncan Johnson.</p>
     </section>
   </div>
 
